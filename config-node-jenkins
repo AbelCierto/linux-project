@@ -1,0 +1,21 @@
+# 1) Crear usuario jenkins (si no existe)
+sudo adduser --disabled-password --gecos "" jenkins || true
+
+# 2) Crear .ssh con permisos correctos
+sudo mkdir -p /home/jenkins/.ssh
+sudo chown -R jenkins:jenkins /home/jenkins/.ssh
+sudo chmod 700 /home/jenkins/.ssh
+
+# 3) Generar keypair (privada + pública) COMO jenkins
+sudo -u jenkins ssh-keygen -t ed25519 \
+  -f /home/jenkins/.ssh/jenkins_node_key \
+  -C "jenkins-node-key" \
+  -N ""
+
+# 4) Autorizar esa misma public key para el usuario jenkins (para permitir login por key)
+sudo -u jenkins bash -lc 'cat /home/jenkins/.ssh/jenkins_node_key.pub >> /home/jenkins/.ssh/authorized_keys'
+sudo chmod 600 /home/jenkins/.ssh/authorized_keys
+sudo chown jenkins:jenkins /home/jenkins/.ssh/authorized_keys
+
+# 5) Verificación
+sudo -u jenkins ls -la /home/jenkins/.ssh
