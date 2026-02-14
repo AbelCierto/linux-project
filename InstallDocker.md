@@ -32,4 +32,4 @@ sudo systemctl enable docker
 ```
 sudo usermod -aG docker $USER
 ```
-Close the connection ssh and try again or restart the instance ec2
+Close the connection ssh and try again or restart the instance ec2. Example replace $USER=jenkins
